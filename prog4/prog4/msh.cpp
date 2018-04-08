@@ -57,6 +57,9 @@ string* tokenizer(string input) {
 			count++;
 			temp = input[count];
 		}
+		if ((input[count + 1] == NULL) || (input[count] = "#")) {
+			cont = false;
+		}
 	}
 	tokens[numToken] = "0";
 	return tokens; 
