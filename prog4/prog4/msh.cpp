@@ -6,7 +6,7 @@
 #define DN "0"
 using namespace std; 
 string prompt = "msh > ";
-
+map<string, string> sub;
 int setvar(vector <string> tokens) {
 	if (tokens[2] == DN) {
 		tokens.push_back(DN);
