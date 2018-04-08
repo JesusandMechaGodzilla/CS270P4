@@ -1,29 +1,33 @@
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std; 
 
-int setvar(string* tokens) {
+int setvar(vector <string> tokens) {
+	if (tokens[3] != "0") {
+		return 0; 
+	}
 	return 0;
 }
-int setprompt(string* tokens) {
+int setprompt(vector <string> tokens) {
 	return 0;
 }
-int setdir(string* tokens) {
+int setdir(vector <string> tokens) {
 	return 0;
 }
-int showprocs(string* tokens) {
+int showprocs(vector <string> tokens) {
 	return 0;
 }
-int done(string* tokens) {
+int done(vector <string> tokens) {
 	return 0;
 }
-int run(string* tokens) {
+int run(vector <string> tokens) {
 	return 0;
 }
-int fly(string* tokens) {
+int fly(vector <string> tokens) {
 	return 0;
 }
-int tovar(string* tokens) {
+int tovar(vector <string> tokens) {
 	return 0;
 
 }
@@ -32,23 +36,15 @@ string read() {
 	getline(cin, input);
 	return input;
 }
-string* tokenizer(string input) {
-	int numToken = 0, aSize = 10, count = 0;
+vector <string> tokenizer(string input) {
+	int count = 0;
 	string token = "";
-	string* tokens = new string[aSize];
+	vector <string> tokens;
 	char temp;
 	bool cont = true;		
 	temp = input[count];
 	while (cont) {
-		if (numToken >= aSize) {
-			aSize = aSize * 2;
-			string* temp = new string[aSize];
-			for (int i = 0; i < numToken; i++) {
-				temp[i] = token[i];
-			}
-			delete[] tokens;
-			tokens = temp;
-		}
+		
 		if (temp == ' ') {
 			while (temp == ' ') {
 				count++;
@@ -63,9 +59,9 @@ string* tokenizer(string input) {
 				count++;
 				temp = input[count];
 			}
-			tokens[numToken] = token;
+			tokens.push_back(token);
 			token = "";
-			numToken++;
+
 		
 			
 		}
@@ -75,9 +71,9 @@ string* tokenizer(string input) {
 				count++;
 				temp = input[count];
 			}
-			tokens[numToken] = token;
+			tokens.push_back(token);
 			token = "";
-			numToken++;
+			
 			
 			temp = input[count];
 		}
@@ -85,14 +81,18 @@ string* tokenizer(string input) {
 			cont = false;
 		}
 	}
-	tokens[numToken] = "0";
+	tokens.push_back("0"); 
 	return tokens; 
 
 
 }
-int functions(string* tokens) {
+int functions(vector <string> tokens) {
+	int error; 
 	if (tokens[0] == "setvar") {
-		setvar(tokens);
+		error = setvar(tokens);
+		if (!error) {
+			cout << "expected 3 tokens, got" << tokens.size() << "tokens.";
+		}
 	}
 	else if (tokens[0] == "setprompt") {
 		setprompt(tokens);
@@ -125,14 +125,14 @@ int functions(string* tokens) {
 
 void loop() {
 	string input; 
-	string* tokens;
-	int status = 1;
-	while (status) {
+	vector <string> tokens;
+	int status = -1;
+	while (status < 0) {
 		cout << "> ";
 		input = read();
 		tokens = tokenizer(input);
 		status = functions(tokens);
-		delete[] tokens; 
+		tokens.clear();
 	}
 }
 
