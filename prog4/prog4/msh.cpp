@@ -45,7 +45,7 @@ string* tokenizer(string input) {
 			count++;
 			temp = input[count];
 		}
-		if (temp != ' ') {
+		else if (temp != ' ') {
 			while ((temp != ' ') && (temp != NULL)) {
 				token = token + temp;
 				count++;
@@ -57,7 +57,7 @@ string* tokenizer(string input) {
 			
 			temp = input[count];
 		}
-		if ((input[count] == NULL) || (input[count] == '#')) {
+		if ((temp == NULL) || temp == '#')) {
 			cont = false;
 		}
 	}
