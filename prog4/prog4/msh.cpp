@@ -5,7 +5,7 @@ using namespace std;
 
 int setvar(vector <string> tokens) {
 	if (tokens[3] != "0") {
-		return 0; 
+		return 1; 
 	}
 	return 0;
 }
