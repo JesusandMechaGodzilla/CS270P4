@@ -14,6 +14,15 @@ string* tokenizer(string input) {
 	bool cont = true;		
 	temp = input[count];
 	while (cont) {
+		if (numToken >= aSize) {
+			aSize = aSize * 2;
+			int* temp = new int[aSize];
+			for (int = 0; i < numToken; i++) {
+				temp[i] = token[i];
+			}
+			delete[] tokens;
+			tokens = temp;
+		}
 		if (temp == ' ') {
 			while (temp == ' ') {
 				count++;
@@ -34,7 +43,7 @@ string* tokenizer(string input) {
 			count++;
 			temp = input[count];
 		}
-		if else (temp != ' ') {
+		else if (temp != ' ') {
 			while (temp != ' ') {
 				token = token + temp;
 				count++;
