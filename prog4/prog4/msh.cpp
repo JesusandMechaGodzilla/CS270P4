@@ -5,6 +5,9 @@ using namespace std;
 int setvar(string* tokens) {
 	return 0;
 }
+int 	setprompt(string* tokens) {
+	return 0;
+}
 string read() {
 	string input;
 	getline(cin, input);
