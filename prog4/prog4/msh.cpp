@@ -9,17 +9,18 @@ string read() {
 string* tokenizer(string input) {
 	int numToken = 0, aSize = 10, count = 0;
 	string token = "";
-	string* tokens = new string[size];
+	string* tokens = new string[aSize];
 	char temp;
-	bool cont = true;
+	bool cont = true;		
+	temp = input[count];
 	while (cont) {
-		temp = input[count];
-		if (temp == " ") {
-			tokens[numToken] = token;
-			token = "";
-			numToken++;
+		if (temp == ' ') {
+			while (temp == ' ') {
+				count++;
+				temp = input[count];
+			}
 		}
-		if else (temp == '"') {
+		if (temp == '"') {
 			count++;
 			temp = input[count];
 			while (temp != '"') {
@@ -30,9 +31,21 @@ string* tokenizer(string input) {
 			tokens[numToken] = token;
 			token = "";
 			numToken++;
+			count++;
+			temp = input[count];
 		}
-		token = token + temp;
-		count++;
+		if else (temp != ' ') {
+			while (temp != ' ') {
+				token = token + temp;
+				count++;
+				temp = input[count];
+			}
+			tokens[numToken] = token;
+			token = "";
+			numToken++;
+			count++;
+			temp = input[count];
+		}
 	}
 
 
