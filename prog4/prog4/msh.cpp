@@ -25,7 +25,7 @@ int setdir(vector <string> tokens) {
 }
 int setprompt(vector <string> tokens) {
 	if (tokens.size() > 3) {
-		cout << "Too many parameters to done." << endl;
+		cout << "Too many parameters to setprompt." << endl;
 		return -1;
 	}
 	else {
@@ -134,6 +134,7 @@ vector <string> tokenizer(string input) {
 }
 int functions(vector <string> tokens) {
 	int error; 
+	int endval;
 	if (tokens[0] == "setvar") {
 		error = setvar(tokens);
 		if (error) {
@@ -151,7 +152,8 @@ int functions(vector <string> tokens) {
 		showprocs(tokens);
 	}
 	else if (tokens[0] == "done") {
-		done(tokens);
+		endval = done(tokens);
+		return endval;
 	}
 	else if (tokens[0] == "run") {
 		run(tokens);
