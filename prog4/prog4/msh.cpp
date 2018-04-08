@@ -34,7 +34,7 @@ string* tokenizer(string input) {
 		if (temp == '"') {
 			count++;
 			temp = input[count];
-			while (temp != '"') {
+			while ((temp != '"') && (temp != NULL)) {
 				token = token + temp;
 				count++;
 				temp = input[count];
