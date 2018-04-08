@@ -4,7 +4,9 @@ using namespace std;
 
 
 string read() {
-
+	string input;
+	cin >> input; 
+	return input;
 }
 string* tokenizer(string input) {
 	int numToken = 0, aSize = 10, count = 0;
