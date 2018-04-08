@@ -3,10 +3,14 @@
 #include <vector>
 #include <queue>
 #include <map>
+
 #define DN "0"
 using namespace std; 
 string prompt = "msh > ";
 map<string, string> sub;
+int startProcess(vector<string> tokens) {
+		
+}
 int setvar(vector <string> tokens) {
 	if (tokens[2] == DN) {
 		tokens.push_back(DN);
@@ -143,7 +147,7 @@ int functions(vector <string> tokens) {
 	}
 	else if (tokens[0] == "setprompt") {
 		setprompt(tokens);
-	}
+	}	
 	else if (tokens[0] == "setdir") {
 		setdir(tokens);
 
