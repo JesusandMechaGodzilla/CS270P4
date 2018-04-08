@@ -29,19 +29,30 @@ int showprocs(vector <string> tokens) {
 	return 0;
 }
 int done(vector <string> tokens) {
-	int retval;
-	if (tokens[1] == DN) {
-		return -1;
-
+	if (tokens.size() > 3) {
+		cout << "Too many parameters to done." << endl;
 	}
 	else {
-		if (stoi(tokens[1])) {
-			retval = stoi(tokens[1]);
-			cout << retval;
-			return retval;
+		int retval;
+		if (tokens[1] == DN) {
+			return -1;
+
 		}
 		else {
-			cout << "Parameter to done must be a non-negative integer";
+			if (!isdigit(tokens[1][0])) {
+				cout << "Parameter to done must be a non-negative integer." << endl;
+				return -1;
+			}
+			else {
+				retval = stoi(tokens[1]);
+				if (retval < 0) {
+					cout << "Parameter to done must be a non-negative integer." << endl;
+					return -1;
+				}
+				else {
+					return retval;
+				}
+			}
 		}
 	}
 }
@@ -89,7 +100,7 @@ vector <string> tokenizer(string input) {
 		
 			
 		}
-		else if (temp != ' ') {
+		else if (temp != ' ' && temp != NULL) {
 			while ((temp != ' ') && (temp != NULL)) {
 				token = token + temp;	
 				count++;
