@@ -11,17 +11,17 @@ string read() {
 string* tokenizer(string input) {
 	int numToken = 0, aSize = 10, count = 0;
 	string token = "";
-	string* tokens = new string[size];
+	string* tokens = new string[aSize];
 	char temp;
 	bool cont = true;
 	while (cont) {
 		temp = input[count];
-		if (temp == " ") {
+		if (temp == ' ') {
 			tokens[numToken] = token;
 			token = "";
 			numToken++;
 		}
-		if else (temp == '"') {
+		else if(temp == '"') {
 			count++;
 			temp = input[count];
 			while (temp != '"') {
