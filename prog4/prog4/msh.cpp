@@ -5,7 +5,7 @@ using namespace std;
 
 string read() {
 	string input;
-	cin >> input; 
+	getline(cin, input);
 	return input;
 }
 string* tokenizer(string input) {
@@ -46,7 +46,7 @@ string* tokenizer(string input) {
 			temp = input[count];
 		}
 		else if (temp != ' ') {
-			while (temp != ' ') {
+			while ((temp != ' ') && (temp != NULL)) {
 				token = token + temp;
 				count++;
 				temp = input[count];
@@ -54,10 +54,10 @@ string* tokenizer(string input) {
 			tokens[numToken] = token;
 			token = "";
 			numToken++;
-			count++;
+			
 			temp = input[count];
 		}
-		if ((input[count + 1] == NULL) || (input[count] = "#")) {
+		if ((input[count] == NULL) || (input[count] == '#')) {
 			cont = false;
 		}
 	}
@@ -69,11 +69,13 @@ string* tokenizer(string input) {
 int functions(string* tokens) {
 	string temp = "";
 	int count = 0;
+	temp = tokens[count];
 	while (temp != "0") {
-		temp = tokens[count];
+		
 
 		cout << temp << endl;
 		count++; 
+		temp = tokens[count];
 	}
 	return 1;
 }
@@ -87,7 +89,7 @@ void loop() {
 		input = read();
 		tokens = tokenizer(input);
 		status = functions(tokens);
-		delete tokens; 
+		delete[] tokens; 
 	}
 }
 
