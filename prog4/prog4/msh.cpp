@@ -2,9 +2,7 @@
 #include <string>
 using namespace std; 
 
-int setvar(string* tokens) {
-	return 0;
-}
+
 string read() {
 	string input;
 	getline(cin, input);
@@ -36,7 +34,7 @@ string* tokenizer(string input) {
 		if (temp == '"') {
 			count++;
 			temp = input[count];
-			while (temp != '"' && temp != NULL) {
+			while ((temp != '"') && (temp != NULL)) {
 				token = token + temp;
 				count++;
 				temp = input[count];
@@ -44,12 +42,12 @@ string* tokenizer(string input) {
 			tokens[numToken] = token;
 			token = "";
 			numToken++;
-		
-			
+			count++;
+			temp = input[count];
 		}
 		else if (temp != ' ') {
 			while ((temp != ' ') && (temp != NULL)) {
-				token = token + temp;	
+				token = token + temp;
 				count++;
 				temp = input[count];
 			}
@@ -59,7 +57,7 @@ string* tokenizer(string input) {
 			
 			temp = input[count];
 		}
-		if (temp == NULL || temp == '#') {
+		if ((temp == NULL) || temp == '#')) {
 			cont = false;
 		}
 	}
@@ -69,35 +67,7 @@ string* tokenizer(string input) {
 
 }
 int functions(string* tokens) {
-	if (tokens[0] == "setvar") {
-		setvar(tokens);
-	}
-	else if (tokens[0] == "setprompt") {
-		setprompt(tokens);
-	}
-	else if (tokens[0] == "setdir") {
-		setdir(tokens);
-
-	}
-	else if (tokens[0] == "showprocs") {
-		showprocs(tokens);
-	}
-	else if (tokens[0] == "done") {
-		done(tokens);
-	}
-	else if (tokens[0] == "run") {
-
-	}
-	else if (tokens[0] == "fly") {
-		
-
-	}
-	else if (tokens[0] == "tovar") {
-
-	}
-	else {
-		cout << "invalid command: " << tokens[0]; 
-	}
+	
 	return 1;
 }
 
