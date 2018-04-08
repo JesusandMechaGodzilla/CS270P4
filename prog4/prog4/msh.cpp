@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#define DN "0"
 using namespace std; 
 
 int setvar(vector <string> tokens) {
@@ -19,7 +20,21 @@ int showprocs(vector <string> tokens) {
 	return 0;
 }
 int done(vector <string> tokens) {
-	return 0;
+	int retval;
+	if (tokens[1] == DN) {
+		return -1;
+
+	}
+	else {
+		if (stoi(tokens[1])) {
+			retval = stoi(tokens[1]);
+			cout << retval;
+			return retval;
+		}
+		else {
+			cout << "Parameter to done must be a non-negative integer";
+		}
+	}
 }
 int run(vector <string> tokens) {
 	return 0;
@@ -81,7 +96,7 @@ vector <string> tokenizer(string input) {
 			cont = false;
 		}
 	}
-	tokens.push_back("0"); 
+	tokens.push_back(DN); 
 	return tokens; 
 
 
