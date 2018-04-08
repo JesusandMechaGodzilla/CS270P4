@@ -1,13 +1,22 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <queue>
+#include <map>
 #define DN "0"
 using namespace std; 
 string prompt = "msh > ";
 
 int setvar(vector <string> tokens) {
-	if (tokens[3] != DN) {
-		return 0; 
+	if (tokens[2] == DN) {
+		tokens.push_back(DN);
+		return 1;
+	}
+	else if (tokens[3] != DN) {
+		return 1; 
+	}
+	else {
+		sub[tokens[1]] = tokens[2]; 
 	}
 	return 0;
 }
@@ -128,8 +137,8 @@ int functions(vector <string> tokens) {
 	int error; 
 	if (tokens[0] == "setvar") {
 		error = setvar(tokens);
-		if (!error) {
-			cout << "expected 3 tokens, got" << tokens.size() << "tokens.";
+		if (error) {
+			cout << "expected 3 tokens, got " << tokens.size() - 2 << " tokens." << endl;
 		}
 	}
 	else if (tokens[0] == "setprompt") {
@@ -162,6 +171,7 @@ int functions(vector <string> tokens) {
 }
 
 void loop() {
+
 	string input; 
 	vector <string> tokens;
 	int status = -1;
