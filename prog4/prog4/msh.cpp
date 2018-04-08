@@ -5,8 +5,27 @@ using namespace std;
 int setvar(string* tokens) {
 	return 0;
 }
-int 	setprompt(string* tokens) {
+int setprompt(string* tokens) {
 	return 0;
+}
+int setdir(string* tokens) {
+	return 0;
+}
+int showprocs(string* tokens) {
+	return 0;
+}
+int done(string* tokens) {
+	return 0;
+}
+int run(string* tokens) {
+	return 0;
+}
+int fly(string* tokens) {
+	return 0;
+}
+int tovar(string* tokens) {
+	return 0;
+
 }
 string read() {
 	string input;
@@ -89,14 +108,14 @@ int functions(string* tokens) {
 		done(tokens);
 	}
 	else if (tokens[0] == "run") {
-
+		run(tokens);
 	}
 	else if (tokens[0] == "fly") {
-		
+		fly(tokens);
 
 	}
 	else if (tokens[0] == "tovar") {
-
+		tovar(tokens);
 	}
 	else {
 		cout << "invalid command: " << tokens[0]; 
