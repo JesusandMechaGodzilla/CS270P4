@@ -6,7 +6,6 @@
 
 #define DN "0"
 using namespace std; 
-string prompt = "msh > ";
 map<string, string> sub;
 int startProcess(vector<string> tokens) {
 		
@@ -27,7 +26,7 @@ int setvar(vector <string> tokens) {
 int setdir(vector <string> tokens) {
 	return 0;
 }
-int setprompt(vector <string> tokens) {
+int setprompt(vector <string> tokens, string & prompt) {
 	if (tokens.size() > 3) {
 		cout << "Too many parameters to setprompt." << endl;
 		return -1;
@@ -48,7 +47,7 @@ int done(vector <string> tokens) {
 	else {
 		int retval;
 		if (tokens[1] == DN) {
-			return -1;
+			return 0;
 
 		}
 		else {
@@ -136,7 +135,7 @@ vector <string> tokenizer(string input) {
 
 
 }
-int functions(vector <string> tokens) {
+int functions(vector <string> tokens, string & prompt) {
 	int error; 
 	int endval;
 	if (tokens[0] == "setvar") {
@@ -146,8 +145,8 @@ int functions(vector <string> tokens) {
 		}
 	}
 	else if (tokens[0] == "setprompt") {
-		setprompt(tokens);
-	}	
+		setprompt(tokens, prompt);
+	}
 	else if (tokens[0] == "setdir") {
 		setdir(tokens);
 
@@ -177,14 +176,14 @@ int functions(vector <string> tokens) {
 
 void loop() {
 
-	string input; 
+	string input, prompt = "msh > "; 
 	vector <string> tokens;
 	int status = -1;
-	while (status < 0) {
+	cout << prompt;
+	while (status < 0 && getline(cin, input)) {
 		cout << prompt;
-		input = read();
 		tokens = tokenizer(input);
-		status = functions(tokens);
+		status = functions(tokens, prompt);
 		tokens.clear();
 	}
 }
