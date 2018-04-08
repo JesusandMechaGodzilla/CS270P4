@@ -3,7 +3,9 @@
 using namespace std; 
 
 string read() {
-
+	string input;
+	cin >> input; 
+	return input; 
 }
 string* tokenizer(string input) {
 
