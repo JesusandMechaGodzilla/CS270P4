@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#define DN "0"
 using namespace std; 
 
 int setvar(string* tokens) {
@@ -15,7 +16,21 @@ int showprocs(string* tokens) {
 	return 0;
 }
 int done(string* tokens) {
-	return 0;
+	int retval;
+	if (tokens[1] == DN) {
+		return -1;
+	}
+	else {
+		if (stoi(tokens[1])) {
+			retval = stoi(tokens[1]);
+			cout << retval;
+			return retval;
+		}
+		else {
+			cout << "Parameter to done must be a non-negative integer";
+		}
+	}
+
 }
 int run(string* tokens) {
 	return 0;
@@ -85,7 +100,7 @@ string* tokenizer(string input) {
 			cont = false;
 		}
 	}
-	tokens[numToken] = "0";
+	tokens[numToken] = DN;
 	return tokens; 
 
 
