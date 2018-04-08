@@ -3,6 +3,7 @@
 #include <vector>
 #define DN "0"
 using namespace std; 
+string prompt = "msh > ";
 
 int setvar(vector <string> tokens) {
 	if (tokens[3] != DN) {
@@ -10,11 +11,18 @@ int setvar(vector <string> tokens) {
 	}
 	return 0;
 }
-int setprompt(vector <string> tokens) {
-	return 0;
-}
 int setdir(vector <string> tokens) {
 	return 0;
+}
+int setprompt(vector <string> tokens) {
+	if (tokens.size() > 3) {
+		cout << "Too many parameters to done." << endl;
+		return -1;
+	}
+	else {
+		prompt = tokens[1];
+		return -1;
+	}
 }
 int showprocs(vector <string> tokens) {
 	return 0;
@@ -22,6 +30,7 @@ int showprocs(vector <string> tokens) {
 int done(vector <string> tokens) {
 	if (tokens.size() > 3) {
 		cout << "Too many parameters to done." << endl;
+		return -1;
 	}
 	else {
 		int retval;
@@ -108,6 +117,9 @@ vector <string> tokenizer(string input) {
 		}
 	}
 	tokens.push_back(DN); 
+	for (int i = 0; i < tokens.size(); i++) {
+		cout << tokens[i] << endl;
+	}
 	return tokens; 
 
 
@@ -154,7 +166,7 @@ void loop() {
 	vector <string> tokens;
 	int status = -1;
 	while (status < 0) {
-		cout << "> ";
+		cout << prompt;
 		input = read();
 		tokens = tokenizer(input);
 		status = functions(tokens);
