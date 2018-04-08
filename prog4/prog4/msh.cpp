@@ -58,12 +58,16 @@ string* tokenizer(string input) {
 			temp = input[count];
 		}
 	}
-
+	tokens[numToken] = NULL;
 
 
 }
 int functions(string* tokens) {
-
+	string temp = "";
+	int count = 0;
+	while (temp != NULL) {
+		cout << tokens[count] << endl;
+	}
 }
 
 void loop() {
