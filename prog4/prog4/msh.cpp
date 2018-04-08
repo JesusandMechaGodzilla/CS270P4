@@ -81,13 +81,14 @@ string read() {
 	return input;
 }
 vector <string> tokenizer(string input) {
-	int count = 0;
+	int count = -1;
 	string token = "";
 	vector <string> tokens;
 	char temp;
 	bool cont = true;		
-	temp = input[count];
 	while (cont) {
+		count++;
+		temp = input[count];
 		
 		if (temp == ' ') {
 			while (temp == ' ') {
@@ -124,11 +125,9 @@ vector <string> tokenizer(string input) {
 		if (temp == NULL || temp == '#') {
 			cont = false;
 		}
+
 	}
 	tokens.push_back(DN); 
-	for (int i = 0; i < tokens.size(); i++) {
-		cout << tokens[i] << endl;
-	}
 	return tokens; 
 
 
