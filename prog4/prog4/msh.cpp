@@ -17,6 +17,7 @@ void loop() {
 	string* tokens;
 	int status = 1;
 	while (status) {
+		cout << "> ";
 		input = read();
 		tokens = tokenizer(input);
 		status = functions(tokens);
