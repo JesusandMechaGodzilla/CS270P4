@@ -18,8 +18,8 @@ string* tokenizer(string input) {
 	while (cont) {
 		if (numToken >= aSize) {
 			aSize = aSize * 2;
-			int* temp = new int[aSize];
-			for (int = 0; i < numToken; i++) {
+			string* temp = new string[aSize];
+			for (int i = 0; i < numToken; i++) {
 				temp[i] = token[i];
 			}
 			delete[] tokens;
@@ -58,16 +58,21 @@ string* tokenizer(string input) {
 			temp = input[count];
 		}
 	}
-	tokens[numToken] = NULL;
+	tokens[numToken] = "0";
+	return tokens; 
 
 
 }
 int functions(string* tokens) {
 	string temp = "";
 	int count = 0;
-	while (temp != NULL) {
-		cout << tokens[count] << endl;
+	while (temp != "0") {
+		temp = tokens[count];
+
+		cout << temp << endl;
+		count++; 
 	}
+	return 1;
 }
 
 void loop() {
