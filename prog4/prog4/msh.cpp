@@ -7,18 +7,16 @@
 #include <sys/wait.h> 
 #define DN "0"
 using namespace std;
-map<string, string> sub;
+map<string, string> sub = { { "ShowTokens", "0" },{ "PATH", "/bin:/usr/bin" } };
 int glob;
 vector<string> procs, dprocs;
 vector<int> pids;
-void myHandler(int sig) {
 
+void myHandler(int sig) {
 	pid_t p;
-	int status;
-	//	while (
-	if ((p = waitpid(-1, &status, WNOHANG)) != -1) {
+	if ((p = waitpid(-1, &sig, WNOHANG)) != -1) {
 		glob = p;
-		for (int i = 0; i < pids.size(); i++) {
+		for (unsigned int i = 0; i < pids.size(); i++) {
 			if (p == pids[i]) {
 				dprocs.push_back(procs[i]);
 				pids.erase(pids.begin() + i);
@@ -27,16 +25,13 @@ void myHandler(int sig) {
 		}
 	}
 }
-int startProcess(vector<string> tokens, int fun /*, vector<string> & procs, vector<int> & pids*/) {
+int startProcess(vector<string> tokens, int fun) {
 	char* temp[100];
-	pid_t pid, wpid;
-	string path = "/bin";
+	pid_t pid;
+	string path = sub["PATH"];
 	int retval, status;
 	string proc = tokens[1];
-	if (tokens[1][0] != '/') {
-		tokens[1] = path + "/" + tokens[1];
-	}
-	for (int i = 0; i < tokens.size() - 1; i++) {
+	for (unsigned int i = 0; i < tokens.size() - 1; i++) {
 		temp[i] = const_cast<char*>(tokens[i + 1].c_str());
 	}
 	temp[tokens.size() - 2] = '\0';
@@ -52,12 +47,12 @@ int startProcess(vector<string> tokens, int fun /*, vector<string> & procs, vect
 	else if (pid > 0) {
 		if (fun == 0) {
 			do {
-				wpid = waitpid(pid, &status, WUNTRACED);
+				waitpid(pid, &status, WUNTRACED);
 			} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 		}
 		if (fun == 1) {
 			do {
-				wpid = waitpid(pid, &status, WNOHANG);
+				waitpid(pid, &status, WNOHANG);
 			} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 			procs.push_back(proc);
 			pids.push_back(pid);
@@ -80,24 +75,25 @@ int setvar(vector <string> tokens) {
 	else {
 		sub[tokens[1]] = tokens[2];
 	}
-	return 0;
+	return -1;
 }
 int setdir(vector <string> tokens) {
-	char* buf;
-	buf = get_current_dir_name();
-	cout << buf << endl;
+	//char* buf;
+	//buf = get_current_dir_name();
+	//cout << buf << endl;
 	if (tokens.size() == 0) {
 		fprintf(stderr, "MSH: expected argument to \"cd\"\n");
 	}
 	else {
+		sub["PATH"] = tokens[1];
 		char* temp = const_cast<char*>(tokens[1].c_str());
 		if (chdir(temp) != 0) {
 			perror("MSH");
 		}
 	}
-	buf = get_current_dir_name();
-	cout << buf << endl;
-	free(buf);
+	//	buf = get_current_dir_name();
+	//	cout << buf  << endl;
+	//  free(buf);
 	return -1;
 }
 int setprompt(vector <string> tokens, string & prompt) {
@@ -110,10 +106,10 @@ int setprompt(vector <string> tokens, string & prompt) {
 		return -1;
 	}
 }
-int showprocs(/*vector <string> procs, vector <int> pids*/) {
+int showprocs() {
 	cout << "Background Processes: " << endl;
-	for (int i = 0; i < procs.size(); i++) {
-		cout << "         " << procs[i] << "      " << pids[i] << endl;
+	for (unsigned int i = 0; i < procs.size(); i++) {
+		cout << "         " << procs[i] << endl;
 	}
 
 	return -1;
@@ -147,18 +143,7 @@ int done(vector <string> tokens) {
 		}
 	}
 }
-/*
-int run(vector <string> tokens, ) {
-int fun = 0;
-startProcess(tokens, fun);
-return 0;
-}
-int fly(vector <string> tokens) {
-int fun = 1;
-startProcess(tokens, fun);
-return 0;
-}
-*/
+
 int tovar(vector <string> tokens) {
 	return 0;
 
@@ -166,10 +151,10 @@ int tovar(vector <string> tokens) {
 string read(string input) {
 	string temp, output;
 
-	for (int i = 0; i<input.size(); i++) {
+	for (unsigned int i = 0; i<input.size(); i++) {
 		if (input[i] == '^') {
 			int j = i + 1;
-			while (input[j] != ' ' && input[j] != '"') {
+			while (input[j] != ' ' && input[j] != '"' && input[j] != '\0') {
 				temp = temp + input[j];
 				j++;
 			}
@@ -236,14 +221,20 @@ vector <string> tokenizer(string input) {
 
 
 }
-int functions(vector <string> tokens, string & prompt/*, vector<string> & procs, vector<int> & pids*/) {
-	int error;
+int functions(vector <string> tokens, string & prompt) {
 	int endval;
-	if (tokens[0] == "setvar") {
-		error = setvar(tokens);
-		if (error) {
-			cout << "expected 3 tokens, got " << tokens.size() - 2 << " tokens." << endl;
+
+	if (sub["ShowTokens"] == "1") {
+		for (unsigned int i = 0; i < tokens.size() - 1; i++) {
+			cout << "Token :  " << tokens[i] << endl;
 		}
+	}
+
+	if (tokens[0] == "setvar") {
+		if (tokens.size() > 4) {
+			cout << "expected 3 tokens, got " << tokens.size() - 1 << " tokens." << endl;
+		}
+		setvar(tokens);
 	}
 	else if (tokens[0] == "setprompt") {
 		setprompt(tokens, prompt);
@@ -253,17 +244,17 @@ int functions(vector <string> tokens, string & prompt/*, vector<string> & procs,
 
 	}
 	else if (tokens[0] == "showprocs") {
-		showprocs(/*procs, pids*/);
+		showprocs();
 	}
 	else if (tokens[0] == "done") {
 		endval = done(tokens);
 		return endval;
 	}
 	else if (tokens[0] == "run") {
-		startProcess(tokens, 0/*, procs, pids*/);
+		startProcess(tokens, 0);
 	}
 	else if (tokens[0] == "fly") {
-		startProcess(tokens, 1/*, procs, pids*/);
+		startProcess(tokens, 1);
 
 	}
 	else if (tokens[0] == "tovar") {
@@ -274,21 +265,7 @@ int functions(vector <string> tokens, string & prompt/*, vector<string> & procs,
 	else {
 		cout << "invalid command: " << tokens[0] << endl;
 	}
-	int pSize = pids.size();
-	//	int pCount = 0;
-	//	for (int i = 0; i < pSize; i++) {
 	signal(SIGCHLD, myHandler);
-	/*		for (int j = 0; j < pids.size(); j++) {
-	if (glob == pids[j]) {
-	//				cout << glob << endl;
-	cout << "Completed:  " << glob << "   "<< procs[j] <<  endl;
-	pids.erase(pids.begin()+j);
-	procs.erase(procs.begin()+j);
-	j = pids.size();
-	}
-	}
-	}
-	*/
 	while (dprocs.size() > 0) {
 		cout << "Completed:    " << dprocs[dprocs.size() - 1] << endl;
 		dprocs.pop_back();
@@ -300,19 +277,18 @@ int functions(vector <string> tokens, string & prompt/*, vector<string> & procs,
 void loop() {
 
 	string input, prompt = "msh > ";
-	vector <string> tokens/*, procs*/;
-	//	vector <int>  pids;
+	vector <string> tokens;
 	int status = -1;
 	cout << prompt;
 	while (status < 0 && getline(cin, input)) {
 		input = read(input);
 		tokens = tokenizer(input);
-		status = functions(tokens, prompt/*, procs, pids*/);
+		status = functions(tokens, prompt);
 		tokens.clear();
 	}
 }
 
-int main(int argc, char **argv) {
+int main() {
 	loop();
 	return 0;
 }
