@@ -12,6 +12,7 @@ int glob;
 vector<string> procs, dprocs;
 vector<int> pids;
 void myHandler(int sig) {
+
 	pid_t p;
 	int status;
 	//	while (
