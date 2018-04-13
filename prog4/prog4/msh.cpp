@@ -4,12 +4,8 @@
 #include <queue>
 #include <map>
 #include <unistd.h>
-#include <fcntl.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-#include <sys/stat.h>
+#include <sys/wait.h> 
 #define DN "0"
-#define MAX 255
 using namespace std;
 map<string, string> sub;
 int glob;
@@ -36,9 +32,6 @@ int startProcess(vector<string> tokens, int fun /*, vector<string> & procs, vect
 	string path = "/bin";
 	int retval, status;
 	string proc = tokens[1];
-	if (fun == 2) {
-		tokens.erase(tokens.begin() + 1);
-	}
 	if (tokens[1][0] != '/') {
 		tokens[1] = path + "/" + tokens[1];
 	}
@@ -46,17 +39,8 @@ int startProcess(vector<string> tokens, int fun /*, vector<string> & procs, vect
 		temp[i] = const_cast<char*>(tokens[i + 1].c_str());
 	}
 	temp[tokens.size() - 2] = '\0';
-	const char * file = "/tmp/mytxt.txt";
 	pid = fork();
 	if (pid == 0) {
-		if (fun == 2) {
-			int fd = open(file, O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
-			if (fd<0) {
-
-			}
-			dup2(fd, 1);
-			close(fd);
-		}
 		retval = execvp(temp[0], temp);
 		if (retval == -1) {
 			perror("exec");
@@ -65,7 +49,7 @@ int startProcess(vector<string> tokens, int fun /*, vector<string> & procs, vect
 		return -1;
 	}
 	else if (pid > 0) {
-		if (fun == 0 || fun == 2) {
+		if (fun == 0) {
 			do {
 				wpid = waitpid(pid, &status, WUNTRACED);
 			} while (!WIFEXITED(status) && !WIFSIGNALED(status));
@@ -77,22 +61,12 @@ int startProcess(vector<string> tokens, int fun /*, vector<string> & procs, vect
 			procs.push_back(proc);
 			pids.push_back(pid);
 		}
-		if (fun == 2) {
-			char buf[MAX];
-			int fd = open(file, O_RDONLY | S_IRGRP);
-			int check = read(fd, buf, MAX);
-			read(fd, buf, check);
-
-			sub[proc] = buf;
-			close(fd);
-		}
 		return -1;
 	}
 	else {
 		return -1;
 	}
 }
-
 
 int setvar(vector <string> tokens) {
 	if (tokens[2] == DN) {
@@ -107,7 +81,6 @@ int setvar(vector <string> tokens) {
 	}
 	return 0;
 }
-
 int setdir(vector <string> tokens) {
 	char* buf;
 	buf = get_current_dir_name();
@@ -192,10 +165,10 @@ int tovar(vector <string> tokens) {
 string read(string input) {
 	string temp, output;
 
-	for (int i = 0; i<input.size();i++) {
+	for (int i = 0; i<input.size(); i++) {
 		if (input[i] == '^') {
 			int j = i + 1;
-			while (input[j] != ' ' && input[j] != '"'&& input[j] != '\0') {
+			while (input[j] != ' ' && input[j] != '"') {
 				temp = temp + input[j];
 				j++;
 			}
@@ -293,7 +266,7 @@ int functions(vector <string> tokens, string & prompt/*, vector<string> & procs,
 
 	}
 	else if (tokens[0] == "tovar") {
-		startProcess(tokens, 2);
+		tovar(tokens);
 	}
 	else if (tokens[0] == "0") {
 	}
